@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoClean — Биоразлагаемое моющее средство для семьи и природы</title>
+    <meta name="description" content="Экологичное моющее средство EcoClean. 100% биоразлагаемое, безопасное для детей и питомцев. Моет эффективно, без вреда для природы.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a href="#" class="logo">
+                    <span class="logo__icon">🌿</span>
+                    <span class="logo__text">EcoClean</span>
+                </a>
+                <button class="burger" aria-label="Меню">
+                    <span class="burger__line"></span>
+                    <span class="burger__line"></span>
+                    <span class="burger__line"></span>
+                </button>
+                <nav class="nav">
+                    <a href="#about" class="nav__link">О продукте</a>
+                    <a href="#benefits" class="nav__link">Почему мы</a>
+                    <a href="#reviews" class="nav__link">Отзывы</a>
+                </nav>
+                <a href="#order" class="btn btn--header">Заказать</a>
+            </div>
+        </div>
+        <div class="mobile-menu">
+            <a href="#about" class="mobile-menu__link">О продукте</a>
+            <a href="#benefits" class="mobile-menu__link">Почему мы</a>
+            <a href="#reviews" class="mobile-menu__link">Отзывы</a>
+            <a href="#order" class="btn btn--primary btn--full mobile-menu__btn">Заказать</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero__content">
+                    <div class="hero__text">
+                        <span class="hero__badge">🌱 100% биоразлагаемое</span>
+                        <h1 class="hero__title">Чистота, которая не оставляет следа</h1>
+                        <p class="hero__subtitle">Моющее средство, которое эффективно отмывает всё и безопасно для детей, питомцев и планеты. Без химии, фосфатов и компромиссов.</p>
+                        <div class="hero__actions">
+                            <a href="#order" class="btn btn--primary btn--large pulse-anim">Заказать со скидкой 31%</a>
+                            <a href="#about" class="btn btn--outline">Как это работает</a>
+                        </div>
+                        <div class="hero__trust">
+                            <span>3 500+ домохозяйств уже выбрали EcoClean</span>
+                        </div>
+                    </div>
+                    <div class="hero__image">
+                        <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600&h=700&fit=crop" alt="Экологичное моющее средство EcoClean" loading="lazy">
+                        <div class="hero__badge-float">
+                            <span class="hero__badge-float-icon">🏆</span>
+                            <span>Выбор эко-семей 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero__wave">
+                <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path fill="#ffffff" d="M0,50 C360,100 1080,0 1440,50 L1440,100 L0,100 Z"/></svg>
+            </div>
+        </section>
+
+        <section class="problem" id="about">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-header__badge">Знакомая ситуация?</span>
+                    <h2 class="section-header__title">Бытовая химия — скрытая угроза в вашем доме</h2>
+                </div>
+                <div class="problem__grid">
+                    <div class="problem__card problem__card--bad">
+                        <div class="problem__card-icon">☠️</div>
+                        <h3 class="problem__card-title">Обычные средства</h3>
+                        <ul class="problem__list">
+                            <li>Содержат фосфаты и хлор</li>
+                            <li>Вызывают аллергию</li>
+                            <li>Токсичны для детей</li>
+                            <li>Загрязняют воду</li>
+                            <li>Не разлагаются годами</li>
+                        </ul>
+                    </div>
+                    <div class="problem__vs">
+                        <span>VS</span>
+                    </div>
+                    <div class="problem__card problem__card--good">
+                        <div class="problem__card-icon">🌿</div>
+                        <h3 class="problem__card-title">EcoClean</h3>
+                        <ul class="problem__list">
+                            <li>Растительные ПАВ</li>
+                            <li>Гипоаллергенно</li>
+                            <li>Безопасно с рождения</li>
+                            <li>Биоразлагаемое за 28 дней</li>
+                            <li>Эко-упаковка</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits" id="benefits">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-header__badge">Преимущества</span>
+                    <h2 class="section-header__title">Почему EcoClean выбирают осознанные семьи</h2>
+                    <p class="section-header__subtitle">Создано для тех, кто не готов жертвовать эффективностью ради экологичности</p>
+                </div>
+                <div class="benefits__grid">
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon-wrap">
+                            <span class="benefit-card__icon">🌱</span>
+                        </div>
+                        <h3 class="benefit-card__title">Полностью биоразлагаемое</h3>
+                        <p class="benefit-card__text">Формула распадается на натуральные компоненты за 28 дней — не загрязняет реки и не вредит экосистеме</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon-wrap">
+                            <span class="benefit-card__icon">👶</span>
+                        </div>
+                        <h3 class="benefit-card__title">Безопасно для детей</h3>
+                        <p class="benefit-card__text">Можно мыть игрушки, пол в детской и посуду малыша — никакой химии, только натуральные компоненты</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon-wrap">
+                            <span class="benefit-card__icon">💪</span>
+                        </div>
+                        <h3 class="benefit-card__title">Мощная очистка</h3>
+                        <p class="benefit-card__text">Справляется с жиром, известковым налётом и застарелыми пятнами — не уступает агрессивной химии</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon-wrap">
+                            <span class="benefit-card__icon">🐕</span>
+                        </div>
+                        <h3 class="benefit-card__title">Безопасно для питомцев</h3>
+                        <p class="benefit-card__text">Не содержит токсичных веществ — можно убирать в доме, где живут кошки и собаки</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon-wrap">
+                            <span class="benefit-card__icon">♻️</span>
+                        </div>
+                        <h3 class="benefit-card__title">Эко-упаковка</h3>
+                        <p class="benefit-card__text">Бутылка из переработанного пластика, этикетка из крафт-бумаги. После использования — в переработку</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon-wrap">
+                            <span class="benefit-card__icon">🌸</span>
+                        </div>
+                        <h3 class="benefit-card__title">Натуральный аромат</h3>
+                        <p class="benefit-card__text">Эфирные масла лимона и мяты вместо синтетических отдушек — свежесть без головной боли</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="product">
+            <div class="container">
+                <div class="product__inner">
+                    <div class="product__image">
+                        <img src="https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=500&h=650&fit=crop" alt="EcoClean моющее средство" loading="lazy">
+                    </div>
+                    <div class="product__info">
+                        <span class="section-header__badge">О продукте</span>
+                        <h2 class="product__title">EcoClean — чистота в гармонии с природой</h2>
+                        <p class="product__description">Создано на основе растительных поверхностно-активных веществ из кокосового масла и кукурузного крахмала. Эффективно очищает любые поверхности, не оставляет разводов и полностью безопасно для здоровья.</p>
+                        <ul class="product__features">
+                            <li class="product__feature">
+                                <span class="product__feature-icon"></span>
+                                Универсальное: кухня, ванная, полы, мебель
+                            </li>
+                            <li class="product__feature">
+                                <span class="product__feature-icon"></span>
+                                Концентрат — одной бутылки хватает на 3 месяца
+                            </li>
+                            <li class="product__feature">
+                                <span class="product__feature-icon"></span>
+                                Не оставляет разводов и химического запаха
+                            </li>
+                            <li class="product__feature">
+                                <span class="product__feature-icon"></span>
+                                Протестировано дерматологами
+                            </li>
+                        </ul>
+                        <div class="product__price-group">
+                            <div class="product__price">
+                                <span class="product__price-current">890 ₽</span>
+                                <span class="product__price-old">1 290 ₽</span>
+                                <span class="product__price-badge">−31%</span>
+                            </div>
+                            <p class="product__price-note">При заказе от 2 шт — бесплатная доставка</p>
+                        </div>
+                        <a href="#order" class="btn btn--primary btn--large">Заказать EcoClean</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="usage">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-header__badge">Как использовать</span>
+                    <h2 class="section-header__title">Всё просто: распылил — вытер — дом чистый</h2>
+                </div>
+                <div class="usage__steps">
+                    <div class="usage__step">
+                        <div class="usage__step-num">1</div>
+                        <div class="usage__step-icon">💧</div>
+                        <h3 class="usage__step-title">Нанеси</h3>
+                        <p class="usage__step-text">Распыли средство на поверхность или нанеси на губку</p>
+                    </div>
+                    <div class="usage__step">
+                        <div class="usage__step-num">2</div>
+                        <div class="usage__step-icon">🧽</div>
+                        <h3 class="usage__step-title">Потри</h3>
+                        <p class="usage__step-text">Протри поверхность — средство сразу начинает работать</p>
+                    </div>
+                    <div class="usage__step">
+                        <div class="usage__step-num">3</div>
+                        <div class="usage__step-icon">✨</div>
+                        <h3 class="usage__step-title">Наслаждайся</h3>
+                        <p class="usage__step-text">Чистая поверхность без разводов и химического запаха</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews" id="reviews">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-header__badge">Отзывы</span>
+                    <h2 class="section-header__title">Что говорят наши покупатели</h2>
+                    <p class="section-header__subtitle">Более 3 500 семей уже перешли на EcoClean. Вот что они рассказывают.</p>
+                </div>
+                <div class="reviews__grid">
+                    <div class="review-card">
+                        <div class="review-card__stars">★★★★★</div>
+                        <blockquote class="review-card__text">«Давно искала безопасное средство для уборки. После рождения дочки перешла на EcoClean — и теперь спокойна. Отмывает всё, пахнет натурально, кожа рук не сохнет. Рекомендую!»</blockquote>
+                        <div class="review-card__author">
+                            <div class="review-card__avatar" style="background:#2D7A3A">А</div>
+                            <div class="review-card__info">
+                                <cite class="review-card__name">Анастасия К.</cite>
+                                <span class="review-card__role">Мама двоих детей</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-card__stars">★★★★★</div>
+                        <blockquote class="review-card__text">«Перешли на эко-средства полгода назад. EcoClean — лучший из всех. Жир на кухне оттирает идеально, при этом без едкого запаха. И цена приятно удивила за такое качество.»</blockquote>
+                        <div class="review-card__author">
+                            <div class="review-card__avatar" style="background:#1F5C2A">М</div>
+                            <div class="review-card__info">
+                                <cite class="review-card__name">Михаил Д.</cite>
+                                <span class="review-card__role">Владелец квартиры</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-card__stars">★★★★★</div>
+                        <blockquote class="review-card__text">«У меня сильная аллергия на бытовую химию — постоянно чихала и кашляла. С EcoClean наконец-то могу убираться в респираторе. Кожа рук перестала шелушиться. Спасибо!»</blockquote>
+                        <div class="review-card__author">
+                            <div class="review-card__avatar" style="background:#3E8E41">Е</div>
+                            <div class="review-card__info">
+                                <cite class="review-card__name">Елена С.</cite>
+                                <span class="review-card__role">Аллергик</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews__stats">
+                    <div class="reviews__stat">
+                        <span class="reviews__stat-number">4.9</span>
+                        <span class="reviews__stat-label">средняя оценка</span>
+                    </div>
+                    <div class="reviews__stat">
+                        <span class="reviews__stat-number">3 500+</span>
+                        <span class="reviews__stat-label">довольных семей</span>
+                    </div>
+                    <div class="reviews__stat">
+                        <span class="reviews__stat-number">97%</span>
+                        <span class="reviews__stat-label">рекомендуют друзьям</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta" id="order">
+            <div class="container">
+                <div class="cta__inner">
+                    <div class="cta__content">
+                        <span class="cta__badge">🔥 Акция до конца недели</span>
+                        <h2 class="cta__title">Сделайте свой дом безопасным уже сегодня</h2>
+                        <p class="cta__text">Закажите EcoClean прямо сейчас и получите <strong>скидку 31%</strong> на первый заказ. Бесплатная доставка при заказе от 2 штук.</p>
+                        <form class="cta__form" id="orderForm">
+                            <input type="text" class="cta__input" placeholder="Ваше имя" required autocomplete="name">
+                            <input type="tel" class="cta__input" placeholder="Номер телефона" required autocomplete="tel">
+                            <div class="cta__select-wrap">
+                                <select class="cta__select" required>
+                                    <option value="" disabled selected>Количество</option>
+                                    <option value="1">1 шт — 890 ₽</option>
+                                    <option value="2">2 шт — 1 780 ₽ (бесплатная доставка)</option>
+                                    <option value="3">3 шт — 2 670 ₽ (бесплатная доставка)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--large btn--full btn--cta">Заказать со скидкой</button>
+                        </form>
+                        <div class="cta__guarantee">
+                            <span>🛡️</span>
+                            <span>Гарантия качества: вернём деньги, если средство вам не подойдёт</span>
+                        </div>
+                    </div>
+                    <div class="cta__image">
+                        <img src="https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400&h=500&fit=crop" alt="Чистый дом с EcoClean" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <a href="#" class="logo">
+                        <span class="logo__icon">🌿</span>
+                        <span class="logo__text">EcoClean</span>
+                    </a>
+                    <p class="footer__tagline">Чистота в гармонии с природой</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Telegram">📱 Telegram</a>
+                        <a href="#" aria-label="WhatsApp">💬 WhatsApp</a>
+                        <a href="#" aria-label="Instagram">📷 Instagram</a>
+                    </div>
+                </div>
+                <div class="footer__links">
+                    <h4>Навигация</h4>
+                    <a href="#about">О продукте</a>
+                    <a href="#benefits">Преимущества</a>
+                    <a href="#reviews">Отзывы</a>
+                    <a href="#order">Заказать</a>
+                </div>
+                <div class="footer__contact">
+                    <h4>Контакты</h4>
+                    <p>support@ecoclean.ru</p>
+                    <p>+7 (800) 123-45-67</p>
+                    <p>пн-пт: 9:00 — 19:00</p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© 2026 EcoClean. Все права защищены.</p>
+                <p>Сделано с заботой о вашей семье и планете 🌍</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">
+        <div class="toast__icon">✅</div>
+        <div class="toast__text">Спасибо! Мы свяжемся с вами в ближайшее время.</div>
+    </div>
+
+    <script>
+        const burger = document.querySelector('.burger');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('burger--active');
+            mobileMenu.classList.toggle('mobile-menu--active');
+            document.body.classList.toggle('no-scroll');
+        });
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('burger--active');
+                mobileMenu.classList.remove('mobile-menu--active');
+                document.body.classList.remove('no-scroll');
+            });
+        });
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const toast = document.getElementById('toast');
+            toast.classList.add('toast--visible');
+            setTimeout(() => {
+                toast.classList.remove('toast--visible');
+            }, 4000);
+            this.reset();
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+<!-- Sales AI Widget -->
+<div id="sales-ai-widget"></div>
+
+<script>
+    window.SalesAIConfig = {
+        apiUrl: 'http://127.0.0.1:8000/',  // Замените на ваш домен
+        defaultClientType: 'msb',
+        theme: {
+            primaryColor: '#667eea',
+            secondaryColor: '#764ba2'
+        },
+        texts: {
+            welcomeMessage: 'Здравствуйте! Чем могу помочь?',
+            placeholder: 'Напишите ваш вопрос...',
+            error: 'Извините, произошла ошибка.'
+        }
+    };
+</script>
+<script src="chat-widget.js"></script>
+<link rel="stylesheet" href="chat-widget.css">
+</body>
+</html>
