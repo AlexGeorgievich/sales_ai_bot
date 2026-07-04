@@ -26,7 +26,7 @@ def get_db_engine():
     # Для pandas используем psycopg2, если asyncpg не поддерживается напрямую для read_sql
     # В реальном проекте лучше использовать синхронный драйвер для админки
     sync_url = db_url.replace("postgresql+asyncpg://", "postgresql://")
-    return create_engine(sync_url)
+    return create_engine(sync_url, pool_pre_ping=True)
 
 @st.cache_resource
 def get_redis_client():
