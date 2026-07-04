@@ -76,15 +76,18 @@ class Lead(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     dialog_id = Column(Integer, ForeignKey("dialogs.id"), nullable=True)
     
-    # Данные лида
+    # Статус и данные
     status = Column(Enum(LeadStatus), default=LeadStatus.NEW)
-    budget = Column(String(100), nullable=True)
-    timeline = Column(String(100), nullable=True)
-    requirements = Column(Text, nullable=True)
-    contact_info = Column(JSON, nullable=True)  # {"email": "...", "phone": "..."}
+    
+    # Явные поля для сбора (требование рецензента)
+    client_name = Column(String(100), nullable=True)
+    client_phone = Column(String(50), nullable=True)
+    client_email = Column(String(100), nullable=True)
+    interested_product = Column(String(200), nullable=True)
+    client_comment = Column(Text, nullable=True)
     
     # Метаданные
-    assigned_to = Column(String(100), nullable=True)  # ID менеджера
+    assigned_to = Column(String(100), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
