@@ -138,4 +138,31 @@ class LeadRepository:
         await session.flush()
         logger.info("Lead created", user_id=user_id, status=LeadStatus.NEW)
         return lead
+
+    @staticmethod
+    async def get_lead_by_dialog(session: AsyncSession, dialog_id: int) -> Optional[Lead]:
+        """Получить лида по ID диалога."""
+        result = await session.execute(
+            select(Lead).where(Lead.dialog_id == dialog_id)
+        )
+        return result.scalars().first()
+
+    @staticmethod
+    async def update_lead(
+        session: AsyncSession,
+        lead_id: int,
+        **kwargs
+    ) -> Optional[Lead]:
+        """Обновить данные существующего лида."""
+        result = await session.execute(
+            select(Lead).where(Lead.id == lead_id)
+        )
+        lead = result.scalars().first()
+        if lead:
+            for key, value in kwargs.items():
+                if hasattr(lead, key) and value is not None:
+                    setattr(lead, key, value)
+            await session.flush()
+            logger.info("Lead updated", lead_id=lead_id)
+        return lead
         

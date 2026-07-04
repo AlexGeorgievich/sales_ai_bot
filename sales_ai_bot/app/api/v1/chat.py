@@ -107,7 +107,8 @@ async def send_message(
         )
         
         # Если в ответе содержится фраза о принятии заявки (со сбором всех полей)
-        if "заявка принята" in response_text.lower():
+        lower_response = response_text.lower()
+        if "заявка принята" in lower_response or "заявка получена" in lower_response or "заявка оформлена" in lower_response or "заявку принял" in lower_response:
             try:
                 # Получаем полную историю диалога для экстракции
                 full_history = [
@@ -121,17 +122,34 @@ async def send_message(
                 lead_data = await gigachat_service.extract_lead_info(full_history)
                 if lead_data:
                     from app.db.repository import LeadRepository
-                    await LeadRepository.create_lead(
-                        session=session,
-                        user_id=user.id,
-                        dialog_id=dialog.id,
-                        client_name=lead_data.get("name"),
-                        client_phone=lead_data.get("phone"),
-                        client_email=lead_data.get("email"),
-                        interested_product=lead_data.get("product"),
-                        client_comment=lead_data.get("comment")
-                    )
-                    logger.info("Lead successfully saved to DB", user_id=user.id)
+                    
+                    # Проверяем, существует ли уже лид для этого диалога
+                    existing_lead = await LeadRepository.get_lead_by_dialog(session, dialog.id)
+                    if existing_lead:
+                        # Обновляем существующий лид
+                        await LeadRepository.update_lead(
+                            session=session,
+                            lead_id=existing_lead.id,
+                            client_name=lead_data.get("name"),
+                            client_phone=lead_data.get("phone"),
+                            client_email=lead_data.get("email"),
+                            interested_product=lead_data.get("product"),
+                            client_comment=lead_data.get("comment")
+                        )
+                        logger.info("Lead successfully updated in DB", user_id=user.id, lead_id=existing_lead.id)
+                    else:
+                        # Создаем новый лид
+                        await LeadRepository.create_lead(
+                            session=session,
+                            user_id=user.id,
+                            dialog_id=dialog.id,
+                            client_name=lead_data.get("name"),
+                            client_phone=lead_data.get("phone"),
+                            client_email=lead_data.get("email"),
+                            interested_product=lead_data.get("product"),
+                            client_comment=lead_data.get("comment")
+                        )
+                        logger.info("Lead successfully saved to DB", user_id=user.id)
             except Exception as e:
                 logger.error("Failed to save lead in chat endpoint", error=str(e), exc_info=True)
         
