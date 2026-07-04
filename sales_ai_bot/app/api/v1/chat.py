@@ -35,6 +35,15 @@ class ChatResponse(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
+class LeadCreateRequest(BaseModel):
+    client_name: Optional[str] = None
+    client_phone: Optional[str] = None
+    client_email: Optional[str] = None
+    interested_product: Optional[str] = None
+    client_comment: Optional[str] = None
+    client_type: str = "msb"
+
+
 @router.post("/message", response_model=ChatResponse, status_code=status.HTTP_200_OK)
 async def send_message(
     request: ChatRequest,
@@ -201,3 +210,43 @@ async def get_chat_history(
         ChatMessage(role=msg.role, content=msg.content)
         for msg in messages
     ]
+
+
+@router.post("/leads", status_code=status.HTTP_201_CREATED)
+async def create_lead_from_form(
+    request: LeadCreateRequest,
+    session: AsyncSession = Depends(get_db_session)
+):
+    """
+    Создание лида напрямую из формы на сайте.
+    """
+    logger.info("Creating lead from site form", name=request.client_name, phone=request.client_phone)
+    try:
+        from app.db.repository import UserRepository, LeadRepository
+        # Идентификация пользователя на основе временного внешнего ID
+        ext_id = f"form_{str(uuid.uuid4())[:8]}"
+        user = await UserRepository.get_or_create_user(
+            session=session,
+            external_id=ext_id,
+            client_type=ClientType(request.client_type)
+        )
+        
+        # Создаем лид
+        lead = await LeadRepository.create_lead(
+            session=session,
+            user_id=user.id,
+            dialog_id=None,
+            client_name=request.client_name,
+            client_phone=request.client_phone,
+            client_email=request.client_email,
+            interested_product=request.interested_product,
+            client_comment=request.client_comment
+        )
+        
+        return {"status": "success", "lead_id": lead.id}
+    except Exception as e:
+        logger.error("Failed to create lead from form", error=str(e), exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to submit lead form"
+        )

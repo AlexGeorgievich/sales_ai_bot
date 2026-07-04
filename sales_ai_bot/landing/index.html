@@ -870,9 +870,40 @@
 
     // Form submission
     [formB2B, formB2C].forEach(form => {
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', Object.fromEntries(new FormData(form).entries()));
+        const rawData = Object.fromEntries(new FormData(form).entries());
+        console.log('Form submitted:', rawData);
+        
+        const isB2B = form.id === 'formB2B';
+        const payload = {
+          client_name: rawData.name,
+          client_phone: rawData.phone || null,
+          client_email: rawData.email,
+          interested_product: isB2B ? rawData.service : rawData.interest,
+          client_comment: isB2B 
+            ? `Компания: ${rawData.company}. Сообщение: ${rawData.message || ''}`
+            : (rawData.message || null),
+          client_type: isB2B ? 'enterprise' : 'msb'
+        };
+        
+        try {
+          const response = await fetch('/api/chat/leads', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+          
+          if (!response.ok) {
+            throw new Error('API request failed');
+          }
+          console.log('Lead successfully saved to DB');
+        } catch (error) {
+          console.error('Error saving lead from form:', error);
+        }
+        
         form.classList.add('hidden');
         formSuccess.classList.remove('hidden');
         setTimeout(() => { form.reset(); formSuccess.classList.add('hidden'); form.classList.remove('hidden'); }, 5000);
