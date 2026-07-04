@@ -888,7 +888,9 @@
         };
         
         try {
-          const response = await fetch('/api/chat/leads', {
+          const rawApiUrl = window.SalesAIConfig?.apiUrl || '/api/';
+          const cleanApiUrl = rawApiUrl.replace(/\/$/, "");
+          const response = await fetch(`${cleanApiUrl}/chat/leads`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
