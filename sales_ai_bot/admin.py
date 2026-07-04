@@ -68,6 +68,7 @@ if page == "📊 Дашборд":
             daily_activity = pd.read_sql(
                 text("SELECT DATE(started_at) as date, COUNT(*) as count FROM dialogs GROUP BY DATE(started_at) ORDER BY date DESC LIMIT 7"),
                 conn
+            )
     except Exception as e:
         st.error(f"Ошибка подключения к БД: {e}")
         st.stop()
