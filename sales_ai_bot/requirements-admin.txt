@@ -1,0 +1,12 @@
+# Testing
+pytest>=8.2.0
+pytest-asyncio>=0.24.0
+pytest-cov>=4.1.0
+fakeredis>=2.36.2
+
+# Admin Panel
+streamlit>=1.31.1
+pandas>=2.2.0
+plotly>=5.19.0
+plotly-express>=0.4.1
+psycopg2-binary>=2.9.0

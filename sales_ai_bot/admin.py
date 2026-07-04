@@ -154,7 +154,8 @@ elif page == "🎯 Лиды":
     try:
         with engine.connect() as conn:
             leads_query = """
-                SELECT l.id, l.status, l.budget, l.timeline, l.created_at, 
+                SELECT l.id, l.status, l.client_name, l.client_phone, l.client_email,
+                       l.interested_product, l.client_comment, l.created_at, 
                        u.external_id, u.client_type
                 FROM leads l
                 JOIN users u ON l.user_id = u.id

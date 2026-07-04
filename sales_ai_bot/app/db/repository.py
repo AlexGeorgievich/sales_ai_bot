@@ -118,19 +118,21 @@ class LeadRepository:
         session: AsyncSession,
         user_id: int,
         dialog_id: int = None,
-        budget: str = None,
-        timeline: str = None,
-        requirements: str = None,
-        contact_info: dict = None
+        client_name: str = None,
+        client_phone: str = None,
+        client_email: str = None,
+        interested_product: str = None,
+        client_comment: str = None
     ) -> Lead:
         """Создать нового лида."""
         lead = Lead(
             user_id=user_id,
             dialog_id=dialog_id,
-            budget=budget,
-            timeline=timeline,
-            requirements=requirements,
-            contact_info=contact_info or {}
+            client_name=client_name,
+            client_phone=client_phone,
+            client_email=client_email,
+            interested_product=interested_product,
+            client_comment=client_comment
         )
         session.add(lead)
         await session.flush()
