@@ -106,7 +106,22 @@
             document.getElementById('sales-ai-input').focus();
         } else {
             chat.classList.remove('open');
+            resetSession();
         }
+    }
+    
+    // Сброс текущей сессии
+    function resetSession() {
+        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        const messagesContainer = document.getElementById('sales-ai-messages');
+        messagesContainer.innerHTML = `
+            <div class="sales-ai-message bot">
+                <div class="sales-ai-message-bubble">
+                    \${texts.welcomeMessage || 'Здравствуйте! Я AI-ассистент отдела продаж. Чем могу помочь?'}
+                </div>
+            </div>
+        `;
+        console.log('Session reset, new sessionId generated:', sessionId);
     }
     
     // Отправка сообщения
