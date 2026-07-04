@@ -171,6 +171,22 @@ class GigaChatService:
 - Процесс работы: Брифинг → ТЗ → Разработка → Тестирование → Запуск
 - Гарантии: 12 месяцев на код, SLA 99.9% для поддержки
 - Условия оплаты: 50% предоплата, 50% после сдачи
+
+КРИТИЧЕСКИ ВАЖНО: СБОР ДАННЫХ КЛИЕНТА (ЛИД-ФОРМА)
+Твоя задача — мягко собрать у клиента 5 пунктов, когда он проявляет интерес к покупке:
+1. Имя
+2. Телефон или Email
+3. Какой продукт/услуга его интересует
+4. Комментарий или детали задачи
+
+ПРАВИЛА СБОРА:
+- Не спрашивай всё сразу! Задавай по 1-2 вопроса за раз.
+- Если клиент назвал данные, подтверди их: "Отлично, я записал: Иван, телефон +7..., интересует разработка сайта. Верно?"
+- Когда все 5 пунктов собраны, напиши: "Спасибо! Ваша заявка принята. Менеджер свяжется с вами в течение 15 минут. Также вы можете заполнить подробную форму на нашем сайте: [ССЫЛКА_НА_ЛЕНДИНГ]"
+- Если клиент отказывается давать данные, не настаивай.
+
+ЗАВЕРШЕНИЕ ДИАЛОГА:
+Если клиент прощается ("спасибо", "пока", "до свидания"), ответь: "Рад был помочь! Если возникнут новые вопросы, я всегда здесь. Хорошего дня!" и больше не задавай вопросов.
 """
         
         if client_type == "enterprise":
@@ -285,6 +301,53 @@ class GigaChatService:
             logger.error("GigaChat call failed", error=str(e))
             return self._get_fallback_response()
     
+    async def extract_lead_info(self, conversation_history: List[Dict[str, str]]) -> Dict[str, Any]:
+        """
+        Извлечение контактных данных лида из истории диалога с помощью ИИ.
+        """
+        # Превращаем диалог в текст
+        dialog_text = ""
+        for msg in conversation_history:
+            role_name = "Клиент" if msg["role"] == "user" else "Ассистент"
+            dialog_text += f"{role_name}: {msg['content']}\n"
+            
+        extraction_prompt = f"""Проанализируй следующий диалог и извлеки из него контактные данные клиента в формате JSON.
+Поля для извлечения:
+- name (Имя клиента, строка или null)
+- phone (Телефон клиента, строка или null)
+- email (Email клиента, строка или null)
+- product (Продукт или услуга, строка или null)
+- comment (Комментарий или детали задачи, строка или null)
+
+Ответь строго в формате JSON без разметки markdown (без тройных бэков) и без лишнего текста, например:
+{{"name": "Иван", "phone": "+79991234567", "email": null, "product": "Интернет-магазин на 1С-Битрикс", "comment": "Нужно интегрировать с моей CRM."}}
+
+Диалог:
+{dialog_text}"""
+        
+        try:
+            # Вызываем API с системным сообщением
+            response = await self._call_api([
+                {"role": "system", "content": "Ты — JSON-экстрактор данных. Отвечай только валидным JSON."},
+                {"role": "user", "content": extraction_prompt}
+            ], temperature=0.1)
+            
+            # Парсим JSON
+            import json
+            cleaned_response = response.strip()
+            if cleaned_response.startswith("```"):
+                lines = cleaned_response.split("\n")
+                if lines[0].startswith("```"):
+                    lines = lines[1:]
+                if lines[-1].startswith("```"):
+                    lines = lines[:-1]
+                cleaned_response = "\n".join(lines).strip()
+                
+            return json.loads(cleaned_response)
+        except Exception as e:
+            logger.error("Failed to extract lead info via GigaChat", error=str(e))
+            return {}
+
     def _get_fallback_response(self) -> str:
         """Fallback-ответ при недоступности GigaChat."""
         return (

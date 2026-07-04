@@ -106,6 +106,35 @@ async def send_message(
             metadata={"tokens_used": len(response_text.split())}
         )
         
+        # Если в ответе содержится фраза о принятии заявки (со сбором всех полей)
+        if "заявка принята" in response_text.lower():
+            try:
+                # Получаем полную историю диалога для экстракции
+                full_history = [
+                    {"role": msg.role, "content": msg.content}
+                    for msg in messages
+                ]
+                # Добавляем последний ответ ассистента в историю
+                full_history.append({"role": "assistant", "content": response_text})
+                
+                # Экстрагируем данные лида
+                lead_data = await gigachat_service.extract_lead_info(full_history)
+                if lead_data:
+                    from app.db.repository import LeadRepository
+                    await LeadRepository.create_lead(
+                        session=session,
+                        user_id=user.id,
+                        dialog_id=dialog.id,
+                        client_name=lead_data.get("name"),
+                        client_phone=lead_data.get("phone"),
+                        client_email=lead_data.get("email"),
+                        interested_product=lead_data.get("product"),
+                        client_comment=lead_data.get("comment")
+                    )
+                    logger.info("Lead successfully saved to DB", user_id=user.id)
+            except Exception as e:
+                logger.error("Failed to save lead in chat endpoint", error=str(e), exc_info=True)
+        
         return ChatResponse(
             user_id=request.user_id,
             session_id=session_id,
