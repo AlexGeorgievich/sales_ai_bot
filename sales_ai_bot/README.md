@@ -84,6 +84,7 @@
 После сборки и запуска проект будет доступен по следующим адресам:
 * 🌐 **Лендинг с виджетом:** [http://localhost](http://localhost)
 * 📖 **Swagger API документация:** [http://localhost/api/docs](http://localhost/api/docs)
+* 📊 **Админ-панель (Streamlit):** [http://localhost:8501](http://localhost:8501)
 
 ---
 
