@@ -172,4 +172,21 @@ def browser_context_args(browser_context_args):
         **browser_context_args,
         "viewport": {"width": 1280, "height": 720},
     }
+
+
+@pytest.fixture(autouse=True)
+def set_allure_title_from_docstring(request):
+    """
+    Автоматически устанавливает заголовок теста в Allure-отчете
+    на основе первой строки его docstring.
+    """
+    try:
+        if request.node and hasattr(request.node, "obj") and request.node.obj:
+            doc = request.node.obj.__doc__
+            if doc:
+                first_line = doc.strip().split("\n")[0].strip()
+                if first_line:
+                    allure.dynamic.title(first_line)
+    except Exception:
+        pass
 
