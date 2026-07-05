@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
@@ -6,10 +6,12 @@ from datetime import datetime
 import uuid
 
 from app.core.gigachat_service import gigachat_service
+from app.core.telegram_service import TelegramService
 from app.db.session import get_db_session
 from app.db.repository import UserRepository, DialogRepository, MessageRepository
 from app.db.models import ClientType
 from app.utils.logger import logger
+
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
@@ -47,6 +49,7 @@ class LeadCreateRequest(BaseModel):
 @router.post("/message", response_model=ChatResponse, status_code=status.HTTP_200_OK)
 async def send_message(
     request: ChatRequest,
+    background_tasks: BackgroundTasks,
     session: AsyncSession = Depends(get_db_session)
 ):
     """
@@ -159,6 +162,17 @@ async def send_message(
                             client_comment=lead_data.get("comment")
                         )
                         logger.info("Lead successfully saved to DB", user_id=user.id)
+                        
+                        # Отправляем оповещение в Telegram
+                        background_tasks.add_task(
+                            TelegramService.send_lead_notification,
+                            client_name=lead_data.get("name"),
+                            client_phone=lead_data.get("phone"),
+                            client_email=lead_data.get("email"),
+                            interested_product=lead_data.get("product"),
+                            client_comment=lead_data.get("comment"),
+                            client_type=request.client_type
+                        )
             except Exception as e:
                 logger.error("Failed to save lead in chat endpoint", error=str(e), exc_info=True)
         
@@ -215,6 +229,7 @@ async def get_chat_history(
 @router.post("/leads", status_code=status.HTTP_201_CREATED)
 async def create_lead_from_form(
     request: LeadCreateRequest,
+    background_tasks: BackgroundTasks,
     session: AsyncSession = Depends(get_db_session)
 ):
     """
@@ -241,6 +256,17 @@ async def create_lead_from_form(
             client_email=request.client_email,
             interested_product=request.interested_product,
             client_comment=request.client_comment
+        )
+        
+        # Отправляем оповещение в Telegram в фоновом режиме
+        background_tasks.add_task(
+            TelegramService.send_lead_notification,
+            client_name=request.client_name,
+            client_phone=request.client_phone,
+            client_email=request.client_email,
+            interested_product=request.interested_product,
+            client_comment=request.client_comment,
+            client_type=request.client_type
         )
         
         return {"status": "success", "lead_id": lead.id}
