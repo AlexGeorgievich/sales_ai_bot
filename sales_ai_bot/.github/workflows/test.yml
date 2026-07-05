@@ -20,14 +20,42 @@ jobs:
         python-version: '3.11'
         cache: 'pip'
 
-    - name: Install dependencies
+    - name: Install base dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r sales_ai_bot/requirements.txt
         pip install pytest pytest-asyncio pytest-cov fakeredis aiosqlite
 
-    - name: Run tests with pytest
+    - name: Run backend unit tests
       env:
         DATABASE_URL: "sqlite+aiosqlite:///:memory:"
       run: |
-        pytest -v --cov=app --cov-report=term-missing
+        cd sales_ai_bot
+        pytest -v --cov=app --cov-report=term-missing --ignore=tests/test_frontend.py
+
+    - name: Install admin and test dependencies
+      run: |
+        pip install -r sales_ai_bot/requirements-admin.txt
+
+    - name: Start Docker services
+      run: |
+        cd sales_ai_bot
+        docker-compose up --build -d
+        # Ждем готовности сервисов (PostgreSQL и backend)
+        sleep 10
+
+    - name: Install Playwright browsers and system deps
+      run: |
+        python -m playwright install --with-deps
+
+    - name: Run frontend Playwright tests (Cross-browser E2E)
+      run: |
+        cd sales_ai_bot
+        pytest tests/test_frontend.py --html=report-frontend.html --self-contained-html -v --browser chromium --browser firefox --browser webkit
+
+    - name: Upload Playwright E2E HTML Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-html-report
+        path: sales_ai_bot/report-frontend.html
