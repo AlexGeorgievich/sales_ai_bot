@@ -57,13 +57,7 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(chat_router)
 
-# Раздача статики для виджета
+# Раздача статики для виджета и лендинга
 app.mount("/widget", StaticFiles(directory="widget"), name="widget")
+app.mount("/", StaticFiles(directory="landing", html=True), name="landing")
 
-@app.get("/")
-async def root():
-    return {
-        "service": settings.PROJECT_NAME,
-        "version": settings.VERSION,
-        "status": "running"
-    }
