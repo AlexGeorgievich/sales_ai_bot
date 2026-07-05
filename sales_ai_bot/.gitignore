@@ -6,3 +6,5 @@ report*.html
 .pytest_cache/
 htmlcov/
 .coverage
+.allure/
+allure-results/
