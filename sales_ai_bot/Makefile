@@ -13,4 +13,10 @@ clean:
 	rm -rf htmlcov
 	rm -rf .pytest_cache
 	rm -rf .coverage
-	
+	rm -rf allure-results
+
+test-allure:
+	pytest tests/test_frontend.py --alluredir=allure-results -v
+
+allure-serve:
+	allure serve allure-results
