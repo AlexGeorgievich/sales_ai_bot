@@ -174,6 +174,22 @@ def browser_context_args(browser_context_args):
     }
 
 
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args):
+    """
+    Добавляет аргументы запуска для Chromium.
+    Отключение GPU предотвращает баги рендеринга и серые засветки экрана в headless-режиме на Windows.
+    """
+    return {
+        **browser_type_launch_args,
+        "args": [
+            "--disable-gpu",
+            "--disable-software-rasterizer",
+            "--window-size=1280,720",
+        ],
+    }
+
+
 @pytest.fixture(autouse=True)
 def set_allure_title_from_docstring(request):
     """
