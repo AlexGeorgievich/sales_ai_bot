@@ -1,5 +1,7 @@
 import pytest
 import pytest_asyncio
+import allure
+import os
 from httpx import AsyncClient
 from unittest.mock import AsyncMock, MagicMock
 from fakeredis.aioredis import FakeRedis
@@ -111,3 +113,63 @@ async def gigachat_service_mock(mock_gigachat_response):
     service._call_api = AsyncMock(return_value=mock_gigachat_response)
     
     return service
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """Данный хук позволяет узнать результат выполнения теста."""
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, "rep_" + rep.when, rep)
+
+
+@pytest.fixture(scope="function")
+def page(context, request):
+    """
+    Переопределенная фикстура page из pytest-playwright.
+    Автоматически закрывает контекст по завершению теста,
+    после чего прикрепляет записанное видео и скриншот финала/ошибки в Allure.
+    """
+    p = context.new_page()
+    yield p
+    
+    # Снимаем скриншот финального состояния страницы
+    try:
+        screenshot_bytes = p.screenshot(full_page=True)
+        allure.attach(
+            screenshot_bytes,
+            name="final_screenshot",
+            attachment_type=allure.attachment_type.PNG
+        )
+    except Exception:
+        pass
+
+    # Закрываем контекст, чтобы Playwright сохранил видео на диск
+    context.close()
+    
+    # Находим видео и прикрепляем к Allure
+    video = p.video
+    if video:
+        try:
+            video_path = video.path()
+            if video_path and os.path.exists(video_path):
+                allure.attach.file(
+                    video_path,
+                    name="video_walkthrough",
+                    attachment_type=allure.attachment_type.WEBM
+                )
+        except Exception:
+            pass
+
+
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    """
+    Устанавливает дефолтный размер экрана для всех тестов (1280x720).
+    Предотвращает появление серых полей по бокам видеозаписи.
+    """
+    return {
+        **browser_context_args,
+        "viewport": {"width": 1280, "height": 720},
+    }
+

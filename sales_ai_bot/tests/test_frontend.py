@@ -53,23 +53,58 @@ def test_landing_navigation_scroll(page: Page):
 @allure.feature("Интерфейс и навигация")
 @allure.story("Мобильная адаптивность шапки")
 @allure.severity(allure.severity_level.CRITICAL)
-def test_landing_mobile_hamburger_menu(page: Page):
+def test_landing_mobile_hamburger_menu(browser):
     """Тест 3: Проверка мобильной адаптивности навигационного меню (бургер-меню)."""
-    with allure.step("Задать мобильное разрешение вьюпорта (iPhone 12)"):
-        page.set_viewport_size({"width": 375, "height": 812})
-        
-    with allure.step("Открыть главную страницу"):
-        page.goto(BASE_URL)
+    # Создаем мобильный контекст с записью видео
+    context = browser.new_context(
+        viewport={"width": 375, "height": 812},
+        is_mobile=True,
+        user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1",
+        record_video_dir="allure-results/"
+    )
+    page = context.new_page()
     
-    with allure.step("Убедиться, что бургер-кнопка видна, а меню скрыто"):
-        burger = page.locator("button#burger")
-        expect(burger).to_be_visible()
+    try:
+        with allure.step("Открыть главную страницу"):
+            page.goto(BASE_URL)
         
-    with allure.step("Кликнуть на бургер-меню"):
-        burger.click()
+        with allure.step("Убедиться, что бургер-кнопка видна, а меню скрыто"):
+            burger = page.locator("button#burger")
+            expect(burger).to_be_visible()
+            
+        with allure.step("Кликнуть на бургер-меню"):
+            burger.click()
+            
+        with allure.step("Проверить, что список навигационных ссылок стал видимым"):
+            expect(page.locator("ul#navLinks")).to_be_visible()
+    finally:
+        # Снимаем финальный скриншот
+        try:
+            screenshot_bytes = page.screenshot(full_page=True)
+            allure.attach(
+                screenshot_bytes,
+                name="final_screenshot",
+                attachment_type=allure.attachment_type.PNG
+            )
+        except Exception:
+            pass
+            
+        # Закрываем контекст, чтобы видео сохранилось
+        context.close()
         
-    with allure.step("Проверить, что список навигационных ссылок стал видимым"):
-        expect(page.locator("ul#navLinks")).to_be_visible()
+        # Прикрепляем видео
+        video = page.video
+        if video:
+            try:
+                video_path = video.path()
+                if video_path and os.path.exists(video_path):
+                    allure.attach.file(
+                        video_path,
+                        name="video_walkthrough",
+                        attachment_type=allure.attachment_type.WEBM
+                    )
+            except Exception:
+                pass
 
 # ==========================================
 # 2. ТЕСТЫ ВКЛАДОК И ВАЛИДАЦИИ ФОРМ
