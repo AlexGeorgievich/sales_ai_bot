@@ -28,6 +28,8 @@
 
 ## 🚀 Быстрый запуск
 
-Для получения подробных инструкций по запуску, настройке переменных окружения и тестированию бэкенда перейдите в **[README.md внутри sales_ai_bot](file:///d:/Dev/opencode-ex/Investigation/Bots-01/sales_ai_bot/README.md)**.
    Перейдите в папку `sales_ai_bot` и выполните:
    docker-compose up --build -d
+
+Для получения подробных инструкций по запуску, настройке переменных окружения и тестированию бэкенда перейдите в **[README.md внутри sales_ai_bot](file:///d:/Dev/opencode-ex/Investigation/Bots-01/sales_ai_bot/README.md)**.
+   
