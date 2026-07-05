@@ -16,7 +16,7 @@ clean:
 	rm -rf allure-results
 
 test-allure:
-	pytest tests/test_frontend.py --alluredir=allure-results -v
+	pytest tests/test_frontend.py --alluredir=allure-results --screenshot=on --video=on -v
 
 allure-serve:
 	allure serve allure-results
