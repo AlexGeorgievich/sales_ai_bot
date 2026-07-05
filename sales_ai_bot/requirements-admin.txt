@@ -3,6 +3,8 @@ pytest>=8.2.0
 pytest-asyncio>=0.24.0
 pytest-cov>=4.1.0
 fakeredis>=2.36.2
+playwright>=1.41.0
+pytest-playwright>=0.4.3
 
 # Admin Panel
 streamlit>=1.31.1
