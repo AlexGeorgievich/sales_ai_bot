@@ -19,8 +19,15 @@
 * **[doc/](file:///d:/Dev/opencode-ex/Investigation/Bots-01/doc)** — Дополнительные материалы, включая [Диалог с заказчиком.txt](file:///d:/Dev/opencode-ex/Investigation/Bots-01/doc/%D0%94%D0%B8%D0%B0%D0%BB%D0%BE%D0%B3%20%D1%81%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D1%87%D0%B8%D0%BA%D0%BE%D0%BC.txt)
 * **[init_project.py](file:///d:/Dev/opencode-ex/Investigation/Bots-01/init_project.py)** — Скрипт инициализации базовой структуры каталогов проекта.
 
+   ## 📚 Документация
+   - 📄 [Архитектура и интеграции](sales_ai_bot/INTEGRATION.md)
+   - 💬 [Сценарии диалогов](sales_ai_bot/scenarios.md)
+   - 🧪 [Инструкция по тестированию](sales_ai_bot/TESTING.md)
+   
 ---
 
 ## 🚀 Быстрый запуск
 
 Для получения подробных инструкций по запуску, настройке переменных окружения и тестированию бэкенда перейдите в **[README.md внутри sales_ai_bot](file:///d:/Dev/opencode-ex/Investigation/Bots-01/sales_ai_bot/README.md)**.
+   Перейдите в папку `sales_ai_bot` и выполните:
+   docker-compose up --build -d
