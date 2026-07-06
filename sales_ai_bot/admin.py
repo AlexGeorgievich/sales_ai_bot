@@ -97,7 +97,7 @@ st.markdown(
     }
     
     /* Кнопки в стиле лендинга */
-    div.stButton > button {
+    div.stButton > button, div[data-testid="stFormSubmitButton"] button {
         background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%) !important;
         color: #ffffff !important;
         border: none !important;
@@ -107,12 +107,12 @@ st.markdown(
         transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s !important;
         box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2) !important;
     }
-    div.stButton > button:hover {
+    div.stButton > button:hover, div[data-testid="stFormSubmitButton"] button:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3) !important;
         opacity: 0.95 !important;
     }
-    div.stButton > button:active {
+    div.stButton > button:active, div[data-testid="stFormSubmitButton"] button:active {
         transform: translateY(1px) !important;
     }
     
@@ -133,6 +133,12 @@ st.markdown(
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
         backdrop-filter: blur(8px) !important;
         margin-top: 4rem !important;
+    }
+    /* Скрытие стандартных границ Streamlit-формы */
+    div[data-testid="stForm"] {
+        border: none !important;
+        padding: 0 !important;
+        background-color: transparent !important;
     }
     </style>
     
@@ -198,21 +204,28 @@ def check_password():
             unsafe_allow_html=True
         )
         
-        username = st.text_input("Логин", placeholder="Введите имя пользователя")
-        password = st.text_input("Пароль", type="password", placeholder="Введите пароль")
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Войти в систему", use_container_width=True):
-            expected_username = os.getenv("ADMIN_USERNAME", "admin")
-            expected_password = os.getenv("ADMIN_PASSWORD", "admin123")
+        with st.form("login_form", clear_on_submit=False):
+            username = st.text_input("Логин", placeholder="Введите имя пользователя")
+            password = st.text_input("Пароль", type="password", placeholder="Введите пароль")
             
-            if username == expected_username and password == expected_password:
-                st.session_state["authenticated"] = True
-                st.success("Успешный вход! Загрузка панели...")
-                time.sleep(1)
-                st.rerun()
-            else:
-                st.error(" Неверный логин или пароль")
+            st.markdown("<br>", unsafe_allow_html=True)
+            submit = st.form_submit_button("Войти в систему", use_container_width=True)
+            
+            if submit:
+                # Очищаем от пробелов и приводим логин к нижнему регистру
+                expected_username = os.getenv("ADMIN_USERNAME", "admin").strip()
+                expected_password = os.getenv("ADMIN_PASSWORD", "admin123").strip()
+                
+                clean_user = username.strip()
+                clean_pass = password.strip()
+                
+                if clean_user.lower() == expected_username.lower() and clean_pass == expected_password:
+                    st.session_state["authenticated"] = True
+                    st.success("Успешный вход! Загрузка панели...")
+                    time.sleep(1)
+                    st.rerun()
+                else:
+                    st.error(" Неверный логин или пароль")
         st.markdown('</div>', unsafe_allow_html=True)
                 
     return False
