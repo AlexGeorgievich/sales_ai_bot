@@ -18,13 +18,56 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
+def check_password():
+    """Возвращает True, если пользователь успешно авторизован."""
+    if "authenticated" not in st.session_state:
+        st.session_state["authenticated"] = False
+
+    if st.session_state["authenticated"]:
+        return True
+
+    # Отрисовка формы входа в центре экрана
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+    with col2:
+        st.markdown("<br><br><br>", unsafe_allow_html=True)
+        st.markdown(
+            "<h2 style='text-align: center;'>🤖 Sales AI Admin</h2>",
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            "<p style='text-align: center; color: gray;'>Панель управления отделом продаж</p>",
+            unsafe_allow_html=True
+        )
+        
+        username = st.text_input("Логин", placeholder="Введите имя пользователя")
+        password = st.text_input("Пароль", type="password", placeholder="Введите пароль")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("Войти в систему", use_container_width=True):
+            expected_username = os.getenv("ADMIN_USERNAME", "admin")
+            expected_password = os.getenv("ADMIN_PASSWORD", "admin123")
+            
+            if username == expected_username and password == expected_password:
+                st.session_state["authenticated"] = True
+                st.success("Успешный вход! Загрузка панели...")
+                time.sleep(1)
+                st.rerun()
+            else:
+                st.error(" Неверный логин или пароль")
+                
+    return False
+
+
+if not check_password():
+    st.stop()
+
+
 # --- ПОДКЛЮЧЕНИЕ К БД И REDIS ---
 @st.cache_resource
 def get_db_engine():
     """Создаем движок БД (кэшируется, чтобы не пересоздавать при каждом клике)."""
     db_url = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:password@localhost:5432/sales_bot")
-    # Для pandas используем psycopg2, если asyncpg не поддерживается напрямую для read_sql
-    # В реальном проекте лучше использовать синхронный драйвер для админки
     sync_url = db_url.replace("postgresql+asyncpg://", "postgresql://")
     return create_engine(sync_url, pool_pre_ping=True)
 
@@ -43,6 +86,7 @@ page = st.sidebar.radio(
     "Перейти к разделу:",
     ["📊 Дашборд", "💬 История диалогов", "🎯 Лиды", "⚙️ Кэш и настройки"]
 )
+
 
 st.sidebar.markdown("---")
 st.sidebar.info("Версия MVP: 1.0.0\nСтатус системы: 🟢 Активен")
