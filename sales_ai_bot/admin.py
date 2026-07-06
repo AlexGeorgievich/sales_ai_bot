@@ -18,6 +18,164 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# --- ИНЪЕКЦИЯ СТИЛЕЙ ИЗ ЛЕНДИНГА ---
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
+    /* Основной фон и шрифт */
+    html, body, [data-testid="stAppViewContainer"] {
+        font-family: 'Inter', sans-serif !important;
+        background-color: #0a0a0f !important;
+        color: #f0f0f5 !important;
+    }
+    
+    /* Скрытие дефолтного хедера Streamlit */
+    [data-testid="stHeader"] {
+        background-color: rgba(0,0,0,0) !important;
+    }
+    
+    /* Стилизация боковой панели (Sidebar) */
+    [data-testid="stSidebar"] {
+        background-color: #111118 !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    
+    /* Заголовок с градиентным текстом */
+    .gradient-header {
+        background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800 !important;
+        font-size: 2.2rem !important;
+        margin-bottom: 1.5rem !important;
+        letter-spacing: -0.02em;
+    }
+    
+    /* Стеклянные карточки для KPI метрик */
+    div[data-testid="stMetric"] {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 12px !important;
+        padding: 1.2rem 1.5rem !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+        transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease !important;
+    }
+    div[data-testid="stMetric"]:hover {
+        transform: translateY(-2px) !important;
+        border-color: rgba(99, 102, 241, 0.4) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+    }
+    
+    /* Метрики текст */
+    div[data-testid="stMetricLabel"] {
+        color: #a0a0b0 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+    }
+    div[data-testid="stMetricValue"] {
+        color: #f0f0f5 !important;
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Поля ввода (логин, пароль, селекторы) */
+    div[data-testid="stTextInput"] input, div[data-testid="stSelectbox"] div[data-baseweb="select"] {
+        background-color: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        color: #f0f0f5 !important;
+        font-family: 'Inter', sans-serif !important;
+        transition: border-color 0.3s, box-shadow 0.3s !important;
+    }
+    
+    div[data-testid="stTextInput"] input:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+        outline: none !important;
+    }
+    
+    /* Кнопки в стиле лендинга */
+    div.stButton > button {
+        background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.6rem 1.5rem !important;
+        font-weight: 600 !important;
+        transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s !important;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2) !important;
+    }
+    div.stButton > button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3) !important;
+        opacity: 0.95 !important;
+    }
+    div.stButton > button:active {
+        transform: translateY(1px) !important;
+    }
+    
+    /* Таблицы лидов */
+    div[data-testid="stDataFrame"] {
+        border-radius: 12px !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        background-color: #111118 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Контейнер формы входа */
+    .login-container {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important;
+        padding: 3rem !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+        backdrop-filter: blur(8px) !important;
+        margin-top: 4rem !important;
+    }
+    </style>
+    
+    <!-- Фоновые светящиеся сферы и сетка как на лендинге -->
+    <div class="grid-overlay"></div>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    
+    <style>
+    .gradient-orb {
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        filter: blur(150px);
+        opacity: 0.12;
+        z-index: -1;
+        pointer-events: none;
+    }
+    .orb-1 {
+        background: #6366f1;
+        top: -10%;
+        left: -10%;
+    }
+    .orb-2 {
+        background: #8b5cf6;
+        bottom: -10%;
+        right: -10%;
+    }
+    .grid-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -2;
+        pointer-events: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 def check_password():
     """Возвращает True, если пользователь успешно авторизован."""
@@ -30,13 +188,13 @@ def check_password():
     # Отрисовка формы входа в центре экрана
     col1, col2, col3 = st.columns([1, 1.5, 1])
     with col2:
-        st.markdown("<br><br><br>", unsafe_allow_html=True)
+        st.markdown('<div class="login-container">', unsafe_allow_html=True)
         st.markdown(
-            "<h2 style='text-align: center;'>🤖 Sales AI Admin</h2>",
+            "<h2 style='text-align: center; background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;'>🤖 Sales AI Admin</h2>",
             unsafe_allow_html=True
         )
         st.markdown(
-            "<p style='text-align: center; color: gray;'>Панель управления отделом продаж</p>",
+            "<p style='text-align: center; color: #a0a0b0; font-size: 0.95rem; margin-bottom: 2rem;'>Панель управления отделом продаж</p>",
             unsafe_allow_html=True
         )
         
@@ -55,12 +213,14 @@ def check_password():
                 st.rerun()
             else:
                 st.error(" Неверный логин или пароль")
+        st.markdown('</div>', unsafe_allow_html=True)
                 
     return False
 
 
 if not check_password():
     st.stop()
+
 
 
 # --- ПОДКЛЮЧЕНИЕ К БД И REDIS ---
@@ -93,7 +253,7 @@ st.sidebar.info("Версия MVP: 1.0.0\nСтатус системы: 🟢 Ак
 
 # --- РАЗДЕЛ 1: ДАШБОРД ---
 if page == "📊 Дашборд":
-    st.title("📊 Дашборд эффективности бота")
+    st.markdown('<h1 class="gradient-header">📊 Дашборд эффективности бота</h1>', unsafe_allow_html=True)
     
     # Запрос метрик из БД
     try:
@@ -146,7 +306,7 @@ if page == "📊 Дашборд":
 
 # --- РАЗДЕЛ 2: ИСТОРИЯ ДИАЛОГОВ ---
 elif page == "💬 История диалогов":
-    st.title("💬 История диалогов")
+    st.markdown('<h1 class="gradient-header">💬 История диалогов</h1>', unsafe_allow_html=True)
     
     try:
         with engine.connect() as conn:
@@ -193,7 +353,7 @@ elif page == "💬 История диалогов":
 
 # --- РАЗДЕЛ 3: ЛИДЫ ---
 elif page == "🎯 Лиды":
-    st.title("🎯 Квалифицированные лиды")
+    st.markdown('<h1 class="gradient-header">🎯 Квалифицированные лиды</h1>', unsafe_allow_html=True)
     
     try:
         with engine.connect() as conn:
@@ -225,7 +385,7 @@ elif page == "🎯 Лиды":
 
 # --- РАЗДЕЛ 4: КЭШ И НАСТРОЙКИ ---
 elif page == "⚙️ Кэш и настройки":
-    st.title("️ Управление кэшем и системой")
+    st.markdown('<h1 class="gradient-header">⚙️ Управление кэшем и системой</h1>', unsafe_allow_html=True)
     
     st.subheader("📊 Статистика Redis кэша")
     try:
